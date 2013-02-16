@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   backgroundColor="#ffcc00"
+
+			   creationComplete="onComplete()"
+			   
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600">
+
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CollectionEvent;
+			import mx.collections.ArrayCollection;
+			
+			[Bindable] private var numSelected:Number;
+			
+			[Bindable] private var dp:ArrayCollection = new ArrayCollection ([
+				{ Subject: "FIRST",isSelected:true},
+				{ Subject: "I N I",isSelected:false},
+				{ Subject: "JAH",isSelected:true},
+				{ Subject: "RAS",isSelected:false},
+				{ Subject: "I N I",isSelected:true},
+				{ Subject: "JAH",isSelected:false},
+				{ Subject: "RAS",isSelected:false},
+				{ Subject: "I N I",isSelected:false},
+				{ Subject: "JAH",isSelected:false},
+				{ Subject: "RAS",isSelected:false},
+				{ Subject: "LAST",isSelected:true}
+			]);
+			
+			private function onComplete():void {
+				checkNumSelected();
+				dp.addEventListener(CollectionEvent.COLLECTION_CHANGE ,onDPchange);
+			}
+			
+			private function onDPchange(event:CollectionEvent):void {
+				checkNumSelected();
+			}
+			
+			private function checkNumSelected():void {
+				numSelected = 0;
+				for(var i:int=0 ; i < dp.length ; i++){
+					if(dp[i].isSelected)
+						numSelected ++;
+				}
+			}
+		]]>
+	</fx:Script>
+
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+	<mx:DataGrid id="dg1" dataProvider="{dp}" >
+		
+		<mx:columns>
+			<mx:DataGridColumn dataField="isSelected" width="200" headerText="Babylon"
+							   itemRenderer="itemRenderer.CheckboxItemRenderer"
+							   headerRenderer="itemRenderer.CheckboxHeaderRenderer" />
+			<mx:DataGridColumn headerText="Subject" dataField="Subject" width="300" />
+			
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<mx:Label text="Babylons selected:" />
+		<mx:Label text="{numSelected}" />
+	</mx:HBox>
+</s:Application>
